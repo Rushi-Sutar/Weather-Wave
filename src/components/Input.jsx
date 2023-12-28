@@ -1,0 +1,22 @@
+import React from "react";
+
+function Input({handlechange,handleclick}) {
+  return (
+    <div className="flex justify-center">
+      <input
+        className="font-serif h-10 rounded-3xl pl-4 w-72 text-black"
+        type="text"
+        onChange={handlechange}
+        placeholder="Enter city"
+      />
+      <button
+        className=" px-5 py-1 ml-2 rounded-3xl text-sm border-2"
+        onClick={handleclick}
+      >
+        Search
+      </button>
+    </div>
+  );
+}
+
+export default Input;
