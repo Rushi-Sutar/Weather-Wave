@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import bgimage from './assets/bgImage.jfif'
 import StartPage from "./components/StartPage";
 import Header from "./components/Header";
 import Input from "./components/Input";
@@ -48,7 +49,7 @@ function App() {
         <div
           className="sticky top-0 h-auto text-white"
           style={{
-            backgroundImage: "url('src/assets/bgImage.jfif')",
+            backgroundImage: `url(${bgimage})`,
             backgroundSize: "cover",
           }}
         >
