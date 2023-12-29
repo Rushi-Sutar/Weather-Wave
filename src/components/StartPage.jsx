@@ -1,4 +1,5 @@
 import React from 'react'
+import logo from '../assets/weathersvg.png'
 
 function StartPage() {
   return (
@@ -6,7 +7,7 @@ function StartPage() {
         <div className="flex text-center justify-center items-center ">
           <img
             className="w-10 md:w-16 lg:w-20"
-            src="src/assets/weathersvg.png"
+            src={logo}
             alt=""
           />
           <h1 className="text-xl font-semibold md:text-2xl lg:text-3xl ">
