@@ -1,10 +1,10 @@
 import React from "react";
 
-function Input({handlechange,handleclick}) {
+function Input({ handlechange, handleclick }) {
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center my-7">
       <input
-        className="font-serif h-10 rounded-3xl pl-4 w-72 text-black"
+        className="font-serif h-10 rounded-3xl pl-4 lg:w-72 lg:h-10 text-black"
         type="text"
         onChange={handlechange}
         placeholder="Enter city"

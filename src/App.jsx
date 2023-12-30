@@ -58,7 +58,8 @@ function App() {
           <Input handlechange={handlechange} handleclick={handleclick} />
 
           <div className="flex justify-center items-center h-screen mt-3 px-2 bg-black bg-opacity-10 shadow-lg backdrop-blur-sm border-10 rounded-lg">
-            <div className="absolute top-0 bg-black bg-opacity-10 shadow-lg backdrop-blur-sm border-10 rounded-lg px-16 py-10 w-1/2 mt-10">
+          <div className="absolute top-0 bg-black bg-opacity-10 shadow-lg backdrop-blur-sm border-10 rounded-lg w-full py-10 lg:w-1/2 mt-10 md:w-[550px]">
+
 
               <Tempreture
                 cityname={data.name}
