@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import bgimage from './assets/bgImage.jfif'
-import StartPage from "./components/StartPage";
+import bgimage from "./assets/bgImage.jfif";
 import Header from "./components/Header";
 import Input from "./components/Input";
 import WeatherDetails from "./components/WeatherDetails";
 import SunTimeDetails from "./components/SunTimeDetails";
 import WeatherIcon from "./components/WeatherIcon";
 import Tempreture from "./components/Tempreture";
+import gsap from "gsap";
 
 function App() {
-
   // States and variables
 
   let tempcityname = "";
@@ -34,55 +33,64 @@ function App() {
   // fetch data from API
 
   useEffect(() => {
+
     fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${import.meta.env.VITE_WEATHER_APIKEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${
+        import.meta.env.VITE_WEATHER_APIKEY
+      }&units=metric`
     )
       .then((responce) => responce.json())
       .then((data) => setData(data))
       .catch((err) => console.log(err));
+    
+    // Animation using GSAP
+    gsap.from('#mainContent', {
+      opacity: 0,
+      duration: 1.7,
+      ease: 'power5.out',
+    });
   }, [city]);
 
   return (
     data && (
       <>
-        <StartPage />
-        <div
-          className="sticky top-0 h-auto text-white"
-          style={{
-            backgroundImage: `url(${bgimage})`,
-            backgroundSize: "cover",
-          }}
-        >
-          <Header />
+        <div id="mainContent">
+          <div
+            className="sticky top-0 h-auto text-white"
+            style={{
+              backgroundImage: `url(${bgimage})`,
+              backgroundSize: "cover",
+            }}
+          >
+            <Header />
 
-          <Input handlechange={handlechange} handleclick={handleclick} />
+            <Input handlechange={handlechange} handleclick={handleclick} />
 
-          <div className="flex justify-center items-center h-screen mt-3 px-2 bg-black bg-opacity-10 shadow-lg backdrop-blur-sm border-10 rounded-lg">
-          <div className="absolute top-0 bg-black bg-opacity-10 shadow-lg backdrop-blur-sm border-10 rounded-lg w-full py-10 lg:w-1/2 mt-10 md:w-[550px]">
+            <div className="flex justify-center items-center h-screen mt-3 px-2 bg-black bg-opacity-10 shadow-lg backdrop-blur-sm border-10 rounded-lg">
+              <div className="absolute top-0 bg-black bg-opacity-10 shadow-lg backdrop-blur-sm border-10 rounded-lg w-full py-10 lg:w-1/2 mt-10 md:w-[550px]">
+                <Tempreture
+                  cityname={data.name}
+                  today={today}
+                  tempreture={data.main.temp}
+                />
 
+                <WeatherIcon
+                  icon={data.weather[0].icon}
+                  desc={data.weather[0].main}
+                />
 
-              <Tempreture
-                cityname={data.name}
-                today={today}
-                tempreture={data.main.temp}
-              />
+                <WeatherDetails
+                  pressure={data.main.pressure}
+                  humidity={data.main.humidity}
+                  windSpeed={data.wind.speed}
+                  windDirection={data.wind.deg}
+                />
 
-              <WeatherIcon
-                icon={data.weather[0].icon}
-                desc={data.weather[0].main}
-              />
-
-              <WeatherDetails
-                pressure={data.main.pressure}
-                humidity={data.main.humidity}
-                windSpeed={data.wind.speed}
-                windDirection={data.wind.deg}
-              />
-
-              <SunTimeDetails
-                sunrisetime={data.sys.sunrise}
-                sunsettime={data.sys.sunset}
-              />
+                <SunTimeDetails
+                  sunrisetime={data.sys.sunrise}
+                  sunsettime={data.sys.sunset}
+                />
+              </div>
             </div>
           </div>
         </div>
