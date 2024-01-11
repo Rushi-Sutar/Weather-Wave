@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import bgimage from "./assets/bgImage.jfif";
 import Header from "./components/Header";
 import Input from "./components/Input";
+import Forecast from "./components/Forecast";
+import CurrentTime from "./components/CurrentTime";
+import LocationDetails from "./components/LocationDetails";
+import SunDetails from "./components/SunDetails";
 import WeatherDetails from "./components/WeatherDetails";
-import SunTimeDetails from "./components/SunTimeDetails";
-import WeatherIcon from "./components/WeatherIcon";
 import Tempreture from "./components/Tempreture";
-import gsap from "gsap";
+import Today from "./components/Today";
 
 function App() {
   // States and variables
@@ -16,6 +17,13 @@ function App() {
   const [city, setCity] = useState("sangli");
   const [data, setData] = useState(null);
   const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
+  const date = `${new Date().getDate()}.${
+    new Date().getMonth() + 1
+  }.${new Date().getFullYear()}`;
+  const time = `${new Date().getHours() % 12 || 12}:${new Date()
+    .getMinutes()
+    .toString()
+    .padStart(2, "0")} ${new Date().getHours() >= 12 ? "PM" : "AM"}`;
 
   // functions
 
@@ -33,7 +41,6 @@ function App() {
   // fetch data from API
 
   useEffect(() => {
-
     fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${
         import.meta.env.VITE_WEATHER_APIKEY
@@ -42,57 +49,59 @@ function App() {
       .then((responce) => responce.json())
       .then((data) => setData(data))
       .catch((err) => console.log(err));
-    
-    // Animation using GSAP
-    gsap.from('#mainContent', {
-      opacity: 0,
-      duration: 1.7,
-      ease: 'power5.out',
-    });
   }, [city]);
 
   return (
     data && (
       <>
-        <div id="mainContent">
-          <div
-            className="sticky top-0 h-auto text-white"
-            style={{
-              backgroundImage: `url(${bgimage})`,
-              backgroundSize: "cover",
-            }}
-          >
-            <Header />
+        <div className="h-screen text-[#686868] bg-[#e9e9e9]">
+          <Header />
+          <Input handlechange={handlechange} handleclick={handleclick} />
+          <center>
+            <div className="h-screen shadow-lg border-10 rounded-3xl bg-[#e9e9e9]">
+              <div className="flex md:w-3/4 flex-col md:flex-row">
+                {/* left div  */}
+                <div
+                  className="lg:w-3/4 bg-[#fafafa] lg:rounded-tl-3xl lg:rounded-bl-3xl md:rounded-tl-3xl md:rounded-bl-3xl
+                 py-4"
+                >
+                  <Today today={today} date={date} />
 
-            <Input handlechange={handlechange} handleclick={handleclick} />
+                  <Tempreture
+                    temp={Math.floor(data.main.temp)}
+                    feelslike={data.main.feels_like}
+                    weather={data.weather[0].main}
+                  />
 
-            <div className="flex justify-center items-center h-screen mt-3 px-2 bg-black bg-opacity-10 shadow-lg backdrop-blur-sm border-10 rounded-lg">
-              <div className="absolute top-0 bg-black bg-opacity-10 shadow-lg backdrop-blur-sm border-10 rounded-lg w-full py-10 lg:w-1/2 mt-10 md:w-[550px]">
-                <Tempreture
-                  cityname={data.name}
-                  today={today}
-                  tempreture={data.main.temp}
-                />
+                  <WeatherDetails
+                    humidity={data.main.humidity}
+                    speed={data.wind.speed}
+                  />
+                  {/* 5 Days forecast details */}
+                  <div className="my-4">
+                    <Forecast city={data.name} />
+                  </div>
+                </div>
 
-                <WeatherIcon
-                  icon={data.weather[0].icon}
-                  desc={data.weather[0].main}
-                />
+                {/* right div */}
+                <div className="right bg-[#f6f6f6] md:w-1/3 md:rounded-tr-3xl md:rounded-br-3xl py-4">
+                  <CurrentTime time={time} />
 
-                <WeatherDetails
-                  pressure={data.main.pressure}
-                  humidity={data.main.humidity}
-                  windSpeed={data.wind.speed}
-                  windDirection={data.wind.deg}
-                />
+                  <LocationDetails
+                    city={data.name}
+                    country={data.sys.country}
+                    lat={data.coord.lat}
+                    lon={data.coord.lon}
+                  />
 
-                <SunTimeDetails
-                  sunrisetime={data.sys.sunrise}
-                  sunsettime={data.sys.sunset}
-                />
+                  <SunDetails
+                    sunrise={data.sys.sunrise}
+                    sunset={data.sys.sunset}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </center>
         </div>
       </>
     )

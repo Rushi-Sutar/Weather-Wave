@@ -1,17 +1,21 @@
-import React from 'react'
+import React from "react";
 
-function Tempreture({cityname,today,tempreture}) {
+function Tempreture({ temp, feelslike, weather }) {
   return (
-    <>
-       <h2 className="text-3xl font-bold text-center leading-loose">
-                {cityname}
-              </h2>
-              <h2 className="text-xl font-bold text-center ">{today}</h2>
-              <p className="text-7xl font-bold text-center leading-tight">
-                {tempreture}°C
-              </p>
-    </>
-  )
+    <div>
+      <p className="text-7xl lg:text-9xl font-semibold text-center leading-tight tracking-wider">
+        {Math.floor(temp)}
+        <span className="lg:text-8xl absolute ">&deg;</span>
+      </p>
+
+      <p className="text-center font-semibold leading-tight">
+        Feels like {feelslike}&deg;
+      </p>
+      <h2 className="text-xl lg:text-2xl font-semibold text-center leading-loose">
+        {weather}
+      </h2>
+    </div>
+  );
 }
 
-export default Tempreture
+export default Tempreture;
