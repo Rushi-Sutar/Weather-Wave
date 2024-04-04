@@ -58,7 +58,7 @@ function App() {
           <Header />
           <Input handlechange={handlechange} handleclick={handleclick} />
           <center>
-            <div className="h-screen shadow-lg border-10 rounded-3xl bg-[#e9e9e9]">
+            <div className="h-screen  border-10 rounded-3xl bg-[#e9e9e9]">
               <div className="flex md:w-3/4 flex-col md:flex-row">
                 {/* left div  */}
                 <div
